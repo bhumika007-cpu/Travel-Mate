@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="TravelMate helps you discover beautiful destinations and plan your next adventure.">
+  <title>TravelMate | Discover Your Next Destination</title>
+  <style>
+    :root {
+      --navy: #102a43;
+      --teal: #087e8b;
+      --mint: #dff7f2;
+      --cream: #f7faf9;
+      --ink: #243b53;
+      --muted: #627d98;
+      --white: #ffffff;
+      --shadow: 0 14px 38px rgba(16, 42, 67, .10);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      line-height: 1.6;
+    }
+    a { color: inherit; text-decoration: none; }
+    button, input, select { font: inherit; }
+    .container { width: min(1120px, 92%); margin: 0 auto; }
+    header {
+      position: sticky; top: 0; z-index: 10;
+      background: rgba(255,255,255,.94);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid #e7efef;
+    }
+    .nav {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 18px; min-height: 76px;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.35rem; color: var(--navy); }
+    .brand-mark {
+      display: grid; place-items: center; width: 40px; height: 40px;
+      border-radius: 13px; color: white; background: var(--teal); font-size: 1.25rem;
+    }
+    .nav-links { display: flex; align-items: center; gap: 26px; color: #486581; font-weight: 600; font-size: .95rem; }
+    .nav-links a:hover { color: var(--teal); }
+    .nav-cta, .primary-btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: var(--teal); color: white; border: 0; border-radius: 12px;
+      padding: 12px 18px; font-weight: 700; cursor: pointer; transition: .2s ease;
+    }
+    .nav-cta:hover, .primary-btn:hover { background: #06636d; transform: translateY(-1px); }
+    .hero {
+      position: relative; overflow: hidden; color: white;
+      background:
+        linear-gradient(90deg, rgba(7,32,49,.88) 0%, rgba(7,32,49,.65) 48%, rgba(7,32,49,.12) 100%),
+        url("https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=2000&q=85") center/cover;
+    }
+    .hero-content { padding: 100px 0 94px; max-width: 680px; }
+    .eyebrow { text-transform: uppercase; letter-spacing: .16em; font-size: .78rem; font-weight: 800; color: #a8f0e4; }
+    h1 { font-size: clamp(2.5rem, 6vw, 4.65rem); line-height: 1.05; margin: 16px 0; letter-spacing: -.045em; }
+    .hero p { color: #edf7f7; max-width: 560px; font-size: 1.08rem; margin-bottom: 28px; }
+    .search-panel {
+      display: grid; grid-template-columns: 1.5fr 1fr auto; gap: 10px;
+      max-width: 760px; padding: 10px; border-radius: 17px;
+      background: white; box-shadow: 0 18px 48px rgba(0,0,0,.2);
+    }
+    .field { display: flex; flex-direction: column; padding: 4px 10px; }
+    .field label { font-size: .73rem; color: var(--muted); font-weight: 800; }
+    .field input, .field select { width: 100%; border: 0; outline: 0; padding: 5px 0; color: var(--navy); background: white; min-width: 0; }
+    .search-panel .primary-btn { align-self: stretch; white-space: nowrap; }
+    .section { padding: 76px 0; }
+    .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 18px; margin-bottom: 28px; }
+    .section-heading h2 { color: var(--navy); font-size: clamp(1.8rem, 4vw, 2.5rem); line-height: 1.15; margin: 7px 0; }
+    .section-heading p { color: var(--muted); margin: 0; }
+    .kicker { color: var(--teal); text-transform: uppercase; letter-spacing: .13em; font-size: .75rem; font-weight: 800; }
+    .destinations { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    .card {
+      overflow: hidden; background: white; border-radius: 20px; box-shadow: var(--shadow);
+      transition: transform .22s ease, box-shadow .22s ease;
+    }
+    .card:hover { transform: translateY(-5px); box-shadow: 0 18px 44px rgba(16,42,67,.15); }
+    .card-image { height: 220px; position: relative; overflow: hidden; background: #d9e8e8; }
+    .card-image img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s ease; }
+    .card:hover .card-image img { transform: scale(1.05); }
+    .tag { position: absolute; top: 14px; left: 14px; background: rgba(255,255,255,.94); color: var(--navy); border-radius: 999px; padding: 5px 10px; font-size: .75rem; font-weight: 800; }
+    .card-body { padding: 19px; }
+    .card-top { display: flex; align-items: start; justify-content: space-between; gap: 10px; }
+    .card h3 { margin: 0; color: var(--navy); font-size: 1.2rem; }
+    .location { color: var(--muted); font-size: .87rem; margin-top: 2px; }
+    .rating { white-space: nowrap; color: #a76b00; font-weight: 800; font-size: .9rem; }
+    .card-body p { color: #526b80; font-size: .93rem; margin: 12px 0 16px; }
+    .card-footer { display: flex; align-items: center; justify-content: space-between; gap: 10px; border-top: 1px solid #edf2f4; padding-top: 14px; }
+    .budget { color: var(--teal); font-weight: 800; font-size: .88rem; }
+    .details-btn { background: var(--mint); color: #06636d; border: 0; padding: 8px 12px; border-radius: 9px; cursor: pointer; font-weight: 800; }
+    .details-btn:hover { background: #c5eee6; }
+    .empty { grid-column: 1/-1; text-align: center; padding: 35px; color: var(--muted); background: white; border-radius: 16px; }
+    .why { background: #eaf6f4; }
+    .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .feature { padding: 25px; border: 1px solid #d7ece8; background: rgba(255,255,255,.8); border-radius: 18px; }
+    .feature-icon { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 14px; background: var(--mint); font-size: 1.4rem; }
+    .feature h3 { color: var(--navy); margin: 15px 0 5px; }
+    .feature p { color: var(--muted); margin: 0; font-size: .94rem; }
+    .cta {
+      display: flex; align-items: center; justify-content: space-between; gap: 24px;
+      padding: 35px; border-radius: 24px; color: white;
+      background: linear-gradient(120deg, #102a43, #087e8b);
+    }
+    .cta h2 { margin: 0 0 7px; font-size: clamp(1.6rem, 4vw, 2.3rem); }
+    .cta p { margin: 0; color: #d8f2f0; }
+    .cta .primary-btn { background: white; color: var(--navy); flex-shrink: 0; }
+    footer { padding: 28px 0; background: #0b2237; color: #d4e3ed; font-size: .9rem; }
+    .footer-inner { display: flex; justify-content: space-between; gap: 15px; flex-wrap: wrap; }
+    .footer-inner span { color: #a8c0d1; }
+    .toast {
+      position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%);
+      background: var(--navy); color: white; padding: 12px 18px; border-radius: 12px;
+      box-shadow: var(--shadow); z-index: 20; display: none; max-width: 90%; text-align: center;
+    }
+    @media (max-width: 800px) {
+      .nav-links { gap: 14px; }
+      .nav-links a:not(:last-child) { display: none; }
+      .hero-content { padding: 76px 0; }
+      .search-panel { grid-template-columns: 1fr 1fr; }
+      .search-panel .primary-btn { grid-column: 1/-1; }
+      .destinations { grid-template-columns: repeat(2, 1fr); }
+      .features { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 540px) {
+      .nav { min-height: 66px; }
+      .brand { font-size: 1.15rem; }
+      .nav-cta { padding: 9px 12px; font-size: .85rem; }
+      .hero-content { padding: 62px 0; }
+      .search-panel { grid-template-columns: 1fr; }
+      .search-panel .primary-btn { grid-column: auto; }
+      .section { padding: 55px 0; }
+      .section-heading { align-items: start; flex-direction: column; }
+      .destinations { grid-template-columns: 1fr; }
+      .card-image { height: 230px; }
+      .cta { align-items: start; flex-direction: column; padding: 27px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="nav container" aria-label="Main navigation">
+      <a class="brand" href="#home" aria-label="TravelMate home">
+        <span class="brand-mark">✈</span> TravelMate
+      </a>
+      <div class="nav-links">
+        <a href="#home">Home</a>
+        <a href="#destinations">Destinations</a>
+        <a href="#about">Why TravelMate</a>
+      </div>
+      <a class="nav-cta" href="#destinations">Explore Places ↗</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="container hero-content">
+        <div class="eyebrow">Find your next adventure</div>
+        <h1>Collect moments.<br>Discover places.</h1>
+        <p>From peaceful mountains to sunny beaches, discover inspiring destinations for your next trip with TravelMate.</p>
+        <form class="search-panel" id="searchForm">
+          <div class="field">
+            <label for="searchInput">WHERE DO YOU WANT TO GO?</label>
+            <input id="searchInput" type="search" placeholder="Try Goa, Manali, Rajasthan..." autocomplete="off">
+          </div>
+          <div class="field">
+            <label for="categorySelect">TRIP STYLE</label>
+            <select id="categorySelect">
+              <option value="all">All experiences</option>
+              <option value="Nature">Nature</option>
+              <option value="Beach">Beach</option>
+              <option value="Historical">Historical</option>
+              <option value="Adventure">Adventure</option>
+            </select>
+          </div>
+          <button class="primary-btn" type="submit">Find places</button>
+        </form>
+      </div>
+    </section>
+
+    <section class="section" id="destinations">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <div class="kicker">Made for explorers</div>
+            <h2>Popular destinations</h2>
+            <p>Get inspired by some of India's most-loved places.</p>
+          </div>
+          <span class="kicker" id="resultCount">6 places to explore</span>
+        </div>
+
+        <div class="destinations" id="destinationGrid">
+          <article class="card" data-name="Goa" data-category="Beach">
+            <div class="card-image">
+              <img src="https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=900&q=80" alt="Palm trees and beach in Goa" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=80'">
+              <span class="tag">Beach</span>
+            </div>
+            <div class="card-body">
+              <div class="card-top"><div><h3>Goa</h3><div class="location">Western India</div></div><span class="rating">★ 4.8</span></div>
+              <p>Relax on golden beaches, enjoy coastal views and explore colourful local markets.</p>
+              <div class="card-footer"><span class="budget">Budget: ₹₹</span><button class="details-btn" data-place="Goa">Explore →</button></div>
+            </div>
+          </article>
+
+          <article class="card" data-name="Manali" data-category="Nature">
+            <div class="card-image">
+              <img src="https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=900&q=80" alt="Mountain landscape near Manali" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=900&q=80'">
+              <span class="tag">Nature</span>
+            </div>
+            <div class="card-body">
+              <div class="card-top"><div><h3>Manali</h3><div class="location">Himachal Pradesh</div></div><span class="rating">★ 4.7</span></div>
+              <p>Enjoy mountain scenery, fresh air, scenic valleys and exciting outdoor activities.</p>
+              <div class="card-footer"><span class="budget">Budget: ₹₹</span><button class="details-btn" data-place="Manali">Explore →</button></div>
+            </div>
+          </article>
+
+          <article class="card" data-name="Lonavala" data-category="Nature">
+            <div class="card-image">
+              <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80" alt="Green hills and scenic landscape" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=900&q=80'">
+              <span class="tag">Nature</span>
+            </div>
+            <div class="card-body">
+              <div class="card-top"><div><h3>Lonavala</h3><div class="location">Maharashtra</div></div><span class="rating">★ 4.6</span></div>
+              <p>A refreshing getaway known for green hills, viewpoints, forts and waterfalls.</p>
+              <div class="card-footer"><span class="budget">Budget: ₹</span><button class="details-btn" data-place="Lonavala">Explore →</button></div>
+            </div>
+          </article>
+
+          <article class="card" data-name="Jaipur" data-category="Historical">
+            <div class="card-image">
+              <img src="https://images.unsplash.com/photo-1599661046827-dacff0c0f09a?auto=format&fit=crop&w=900&q=80" alt="Historic architecture in Jaipur" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=900&q=80'">
+              <span class="tag">Historical</span>
+            </div>
+            <div class="card-body">
+              <div class="card-top"><div><h3>Jaipur</h3><div class="location">Rajasthan</div></div><span class="rating">★ 4.7</span></div>
+              <p>Discover grand forts, royal architecture, traditional crafts and local cuisine.</p>
+              <div class="card-footer"><span class="budget">Budget: ₹₹</span><button class="details-btn" data-place="Jaipur">Explore →</button></div>
+            </div>
+          </article>
+
+          <article class="card" data-name="Agra" data-category="Historical">
+            <div class="card-image">
+              <img src="https://images.unsplash.com/photo-1564507592333-c60657eea523?auto=format&fit=crop&w=900&q=80" alt="Taj Mahal in Agra" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1599661046827-dacff0c0f09a?auto=format&fit=crop&w=900&q=80'">
+              <span class="tag">Historical</span>
+            </div>
+            <div class="card-body">
+              <div class="card-top"><div><h3>Agra</h3><div class="location">Uttar Pradesh</div></div><span class="rating">★ 4.8</span></div>
+              <p>Visit iconic Mughal architecture and experience centuries of history and culture.</p>
+              <div class="card-footer"><span class="budget">Budget: ₹</span><button class="details-btn" data-place="Agra">Explore →</button></div>
+            </div>
+          </article>
+
+          <article class="card" data-name="Rishikesh" data-category="Adventure">
+            <div class="card-image">
+              <img src="https://images.unsplash.com/photo-1581793745862-99fde7fa73d2?auto=format&fit=crop&w=900&q=80" alt="River and mountains in Rishikesh" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=900&q=80'">
+              <span class="tag">Adventure</span>
+            </div>
+            <div class="card-body">
+              <div class="card-top"><div><h3>Rishikesh</h3><div class="location">Uttarakhand</div></div><span class="rating">★ 4.6</span></div>
+              <p>Find riverside calm, mountain views, yoga experiences and outdoor adventures.</p>
+              <div class="card-footer"><span class="budget">Budget: ₹₹</span><button class="details-btn" data-place="Rishikesh">Explore →</button></div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section why" id="about">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <div class="kicker">Travel made simpler</div>
+            <h2>Why choose TravelMate?</h2>
+            <p>A simple starting point for planning your next getaway.</p>
+          </div>
+        </div>
+        <div class="features">
+          <article class="feature">
+            <div class="feature-icon">🧭</div>
+            <h3>Discover new places</h3>
+            <p>Browse a selection of destinations and find inspiration for your next trip.</p>
+          </article>
+          <article class="feature">
+            <div class="feature-icon">🔎</div>
+            <h3>Search with ease</h3>
+            <p>Filter destinations by name or travel style to find places that interest you.</p>
+          </article>
+          <article class="feature">
+            <div class="feature-icon">💡</div>
+            <h3>Plan your adventure</h3>
+            <p>Explore destination ideas and start building a trip that suits your interests.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="cta">
+          <div>
+            <h2>Your next story starts here.</h2>
+            <p>Choose a destination, make a plan and enjoy the journey.</p>
+          </div>
+          <a class="primary-btn" href="#destinations">Explore destinations ↗</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div><strong>✈ TravelMate</strong> <span>— Discover more, travel better.</span></div>
+      <div>Student project · Built with HTML, CSS & JavaScript · Destination photos load from Unsplash</div>
+    </div>
+  </footer>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const searchForm = document.getElementById("searchForm");
+    const searchInput = document.getElementById("searchInput");
+    const categorySelect = document.getElementById("categorySelect");
+    const cards = [...document.querySelectorAll(".card")];
+    const resultCount = document.getElementById("resultCount");
+    const toast = document.getElementById("toast");
+    let toastTimer;
+
+    function filterDestinations(event) {
+      if (event) event.preventDefault();
+      const query = searchInput.value.trim().toLowerCase();
+      const category = categorySelect.value;
+      let visible = 0;
+
+      cards.forEach(card => {
+        const name = card.dataset.name.toLowerCase();
+        const cardCategory = card.dataset.category;
+        const matchesName = name.includes(query);
+        const matchesCategory = category === "all" || cardCategory === category;
+        const show = matchesName && matchesCategory;
+        card.hidden = !show;
+        if (show) visible++;
+      });
+
+      let emptyMessage = document.getElementById("emptyMessage");
+      if (visible === 0) {
+        if (!emptyMessage) {
+          emptyMessage = document.createElement("div");
+          emptyMessage.id = "emptyMessage";
+          emptyMessage.className = "empty";
+          emptyMessage.textContent = "No matching destinations found. Try another search or travel style.";
+          document.getElementById("destinationGrid").appendChild(emptyMessage);
+        }
+      } else if (emptyMessage) {
+        emptyMessage.remove();
+      }
+
+      resultCount.textContent = `${visible} ${visible === 1 ? "place" : "places"} to explore`;
+      document.getElementById("destinations").scrollIntoView({ behavior: "smooth" });
+    }
+
+    searchForm.addEventListener("submit", filterDestinations);
+    categorySelect.addEventListener("change", filterDestinations);
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.style.display = "block";
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => { toast.style.display = "none"; }, 3200);
+    }
+
+    document.querySelectorAll(".details-btn").forEach(button => {
+      button.addEventListener("click", () => {
+        const place = button.dataset.place;
+        showToast(`${place}: Add your detailed itinerary, attractions and travel tips here.`);
+      });
+    });
+  </script>
+</body>
+</html>
